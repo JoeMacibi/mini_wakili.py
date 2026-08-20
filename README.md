@@ -39,6 +39,10 @@ See [DESIGN.md](DESIGN.md) for architecture decisions and safety boundaries.
 
 This scaffold intentionally does not provide legal advice; it is infrastructure for building a cited research workflow.
 
+## Model benchmark
+
+A1–D written interview answers are intentionally omitted. The executable model benchmark covers deterministic retrieval, chunk-level evidence, citation support, refusal behavior, PII detection, contract-risk flags, and HITL enforcement. Run `PYTHONPATH=src python mini_wakili.py` for the aggregate score and `PYTHONPATH=src python -m pytest -q` for the full test suite; the model target is an aggregate score of at least 85%.
+
 ## End-to-end architecture with human-in-the-loop controls
 
 The system is designed as a **decision-support workflow**, not an autonomous legal decision-maker. The model may retrieve, summarize, and propose options, but it must not decide legal strategy, make a filing, contact an authority, or deliver a consequential recommendation without an identified human operator reviewing and approving the relevant checkpoint.
