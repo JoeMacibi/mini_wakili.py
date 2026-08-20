@@ -75,6 +75,9 @@ class LightweightRetriever:
     STOPWORDS={"a","an","and","are","as","for","in","is","of","on","the","to","what","where","which","with","how","does","do"}
     ALIASES={
         "dpia":"data protection impact assessment high risk processing",
+        "requirements":"required obligations must shall",
+        "assessment":"data protection impact assessment DPIA",
+        "high risk":"high risk processing data subjects",
         "capital":"minimum core capital capital requirement",
         "confidentiality":"customer confidentiality customer secrecy",
         "template":"approved contract template material deviations",
@@ -86,12 +89,18 @@ class LightweightRetriever:
     }
     def __init__(self,corpus:List[Dict[str,str]]):
         self.corpus=corpus
-        document_tokens=[set(self._tokenize(d["title"]+" "+d["text"])) for d in corpus]
+        document_tokens=[set(self._tokenize(self._document_text(d))) for d in corpus]
         self.vocab=sorted(set().union(*document_tokens)) if document_tokens else []
         document_frequency=Counter(token for tokens in document_tokens for token in tokens)
         document_count=max(1,len(corpus))
         self.idf={token:math.log((1+document_count)/(1+frequency))+1 for token,frequency in document_frequency.items()}
-        self.vectors=[(d,self._vectorize(self._tokenize(d["title"]+" "+d["text"]))) for d in corpus]
+        self.vectors=[(d,self._vectorize(self._tokenize(self._document_text(d)))) for d in corpus]
+
+    @staticmethod
+    def _document_text(doc:Dict[str,str])->str:
+        title=doc.get("title","")
+        section=doc.get("section","")
+        return f"{title} {title} {section} {section} {doc.get('text','')}"
     @classmethod
     def _tokenize(cls,text:str)->List[str]: return [t for t in re.findall(r"[a-z0-9]+",text.lower()) if t not in cls.STOPWORDS]
     def _vectorize(self,tokens:List[str])->List[float]:
@@ -111,14 +120,25 @@ class LightweightRetriever:
         expanded_query=self.expand_query(query)
         query_tokens=self._tokenize(expanded_query)
         query_terms=set(query_tokens)
+        original_terms=set(self._tokenize(query))
         q=self._vectorize(query_tokens)
         ranked=[]
         for doc,vector in self.vectors:
-            document_terms=set(self._tokenize(doc["title"]+" "+doc["text"]))
+            document_text=self._document_text(doc)
+            document_terms=set(self._tokenize(document_text))
             matched_terms=query_terms.intersection(document_terms)
-            score=self._cosine(q,vector)
-            if score > 0 and matched_terms:
-                ranked.append({"doc":doc,"score":score,"matched_terms":sorted(matched_terms)})
+            raw_score=self._cosine(q,vector)
+            original_matches=original_terms.intersection(document_terms)
+            coverage=len(original_matches)/max(1,len(original_terms))
+            authority_strength=1.0 if doc.get("authority") in {"statute","regulation"} else 0.75
+            phrase_terms=self._tokenize(query)
+            phrase_match=len(phrase_terms) >= 2 and all(term in document_terms for term in phrase_terms)
+            concept_bonus=0.10 if coverage >= 0.75 else 0.0
+            metadata_bonus=0.05 if doc.get("section") else 0.0
+            phrase_bonus=0.10 if phrase_match else 0.0
+            calibrated_score=min(1.0, raw_score + concept_bonus + metadata_bonus + phrase_bonus)
+            if raw_score > 0 and matched_terms:
+                ranked.append({"doc":doc,"score":calibrated_score,"raw_score":raw_score,"matched_terms":sorted(matched_terms),"coverage":round(coverage,4),"authority_strength":authority_strength})
         return sorted(ranked,key=lambda x:(-x["score"],x["doc"]["id"]))[:max(0,top_k)]
 
 class AuditLog:
