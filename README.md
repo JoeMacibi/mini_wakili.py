@@ -62,7 +62,7 @@ On Windows PowerShell, activate with `.venv\\Scripts\\Activate.ps1` and use `pyt
 
 ## Model benchmark
 
-A1–D written interview answers are intentionally omitted. The executable model benchmark covers deterministic retrieval, chunk-level evidence, citation support, refusal behavior, PII detection, contract-risk flags, and HITL enforcement. Run `PYTHONPATH=src python mini_wakili.py` for the aggregate score and `PYTHONPATH=src python -m pytest -q` for the full test suite; the model target is an aggregate score of at least 85%.
+A1–D written interview answers are intentionally omitted. The executable model benchmark covers 40 supported, unsupported, unsafe, and PII-bearing scenarios across deterministic retrieval, chunk-level evidence, citation support, refusal behavior, PII detection, contract-risk flags, and HITL enforcement. Retrieval uses TF-IDF weighting, controlled legal aliases, minimum term overlap, and a confidence threshold. Run `PYTHONPATH=src python mini_wakili.py` for the aggregate score and `PYTHONPATH=src python -m pytest -q` for the full test suite; the model target is an aggregate score of at least 85%.
 
 ## End-to-end architecture with human-in-the-loop controls
 
