@@ -109,36 +109,41 @@ class LightweightRetriever:
     def _cosine(a:List[float],b:List[float])->float:
         den=math.sqrt(sum(x*x for x in a)*sum(x*x for x in b)); return sum(x*y for x,y in zip(a,b))/den if den else 0.0
     @classmethod
-    def expand_query(cls,query:str)->str:
-        expanded=query
+    def expand_query_variants(cls,query:str)->List[str]:
+        variants=[query]
         lowered=query.lower()
         for term,expansion in cls.ALIASES.items():
             if term in lowered:
-                expanded += " " + expansion
-        return expanded
+                variants.append(expansion)
+        return variants
+    @classmethod
+    def expand_query(cls,query:str)->str:
+        return " ".join(cls.expand_query_variants(query))
     def search(self,query:str,top_k:int=5)->List[Dict[str,Any]]:
-        expanded_query=self.expand_query(query)
-        query_tokens=self._tokenize(expanded_query)
-        query_terms=set(query_tokens)
-        original_terms=set(self._tokenize(query))
-        q=self._vectorize(query_tokens)
         ranked=[]
         for doc,vector in self.vectors:
             document_text=self._document_text(doc)
             document_terms=set(self._tokenize(document_text))
-            matched_terms=query_terms.intersection(document_terms)
-            raw_score=self._cosine(q,vector)
-            original_matches=original_terms.intersection(document_terms)
-            coverage=len(original_matches)/max(1,len(original_terms))
-            authority_strength=1.0 if doc.get("authority") in {"statute","regulation"} else 0.75
-            phrase_terms=self._tokenize(query)
-            phrase_match=len(phrase_terms) >= 2 and all(term in document_terms for term in phrase_terms)
-            concept_bonus=0.10 if coverage >= 0.75 else 0.0
-            metadata_bonus=0.05 if doc.get("section") else 0.0
-            phrase_bonus=0.10 if phrase_match else 0.0
-            calibrated_score=min(1.0, raw_score + concept_bonus + metadata_bonus + phrase_bonus)
-            if raw_score > 0 and matched_terms:
-                ranked.append({"doc":doc,"score":calibrated_score,"raw_score":raw_score,"matched_terms":sorted(matched_terms),"coverage":round(coverage,4),"authority_strength":authority_strength})
+            best=None
+            for variant in self.expand_query_variants(query):
+                query_tokens=self._tokenize(variant)
+                query_terms=set(query_tokens)
+                original_terms=set(self._tokenize(query))
+                matched_terms=query_terms.intersection(document_terms)
+                raw_score=self._cosine(self._vectorize(query_tokens),vector)
+                original_matches=original_terms.intersection(document_terms)
+                coverage=len(original_matches)/max(1,len(original_terms))
+                alias_matches=len(matched_terms)/max(1,len(query_terms))
+                phrase_match=len(query_tokens) >= 2 and all(term in document_terms for term in query_tokens)
+                concept_bonus=0.10 if max(coverage,alias_matches) >= 0.75 else 0.0
+                metadata_bonus=0.05 if doc.get("section") else 0.0
+                phrase_bonus=0.10 if phrase_match else 0.0
+                calibrated_score=min(1.0, raw_score + concept_bonus + metadata_bonus + phrase_bonus)
+                candidate={"doc":doc,"score":calibrated_score,"raw_score":raw_score,"matched_terms":sorted(matched_terms),"coverage":round(max(coverage,alias_matches),4),"authority_strength":1.0 if doc.get("authority") in {"statute","regulation"} else 0.75}
+                if matched_terms and (best is None or candidate["score"] > best["score"]):
+                    best=candidate
+            if best is not None:
+                ranked.append(best)
         return sorted(ranked,key=lambda x:(-x["score"],x["doc"]["id"]))[:max(0,top_k)]
 
 class AuditLog:
