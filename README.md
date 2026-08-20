@@ -39,6 +39,27 @@ See [DESIGN.md](DESIGN.md) for architecture decisions and safety boundaries.
 
 This scaffold intentionally does not provide legal advice; it is infrastructure for building a cited research workflow.
 
+## Local Kenyan citation corpus
+
+The model loads `data/raw/kenya/legal_materials.json`, a local corpus of 20+ Kenyan law, regulatory, and clearly labeled synthetic internal-policy materials. These are curated assessment summaries, not official verbatim legal advice; each record includes an identifier, title, authority type, jurisdiction, section/topic, status, effective date, and provenance disclaimer. Verify any material against the current official Kenya Law, CBK, or ODPC publication before reliance.
+
+### Run it locally
+
+From the repository root:
+
+```bash
+# macOS/Linux
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+PYTHONPATH=src python -m pytest -q
+python mini_wakili.py
+python mini_wakili.py --list-corpus
+python mini_wakili.py "What are the data protection impact assessment requirements?"
+```
+
+On Windows PowerShell, activate with `.venv\\Scripts\\Activate.ps1` and use `python -m pytest -q`, `python mini_wakili.py`, `python mini_wakili.py --list-corpus`, or `python mini_wakili.py "What are the data protection impact assessment requirements?"`. The last command prints status, confidence, exact quoted evidence, chunk IDs, citations, claims, contradiction signals, and the mandatory human-review warning.
+
 ## Model benchmark
 
 A1–D written interview answers are intentionally omitted. The executable model benchmark covers deterministic retrieval, chunk-level evidence, citation support, refusal behavior, PII detection, contract-risk flags, and HITL enforcement. Run `PYTHONPATH=src python mini_wakili.py` for the aggregate score and `PYTHONPATH=src python -m pytest -q` for the full test suite; the model target is an aggregate score of at least 85%.

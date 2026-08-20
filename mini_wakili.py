@@ -9,9 +9,10 @@ import hashlib, json, math, re, uuid
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-KNOWLEDGE_CORPUS = [
+FALLBACK_CORPUS = [
  {"id":"STATUTE-BANKING-01","title":"Banking Act Section 11 - Minimum Capital","authority":"statute","status":"current","effective_date":"2020-01-01","jurisdiction":"KE","text":"An institution shall maintain minimum core capital of at least one billion Kenya shillings. The Central Bank of Kenya may prescribe higher capital requirements based on risk profile."},
  {"id":"STATUTE-DPA-01","title":"Data Protection Act 2019 Section 25 - Principles","authority":"statute","status":"current","effective_date":"2019-11-25","jurisdiction":"KE","text":"Personal data shall be processed lawfully, fairly, and transparently. Personal data collected for specified, explicit, and legitimate purposes shall not be further processed."},
  {"id":"STATUTE-DPA-02","title":"Data Protection Act 2019 Section 41 - Impact Assessment","authority":"statute","status":"current","effective_date":"2019-11-25","jurisdiction":"KE","text":"Where processing is likely to result in high risk to data subjects, the controller shall carry out a Data Protection Impact Assessment before processing."},
@@ -23,6 +24,20 @@ KNOWLEDGE_CORPUS = [
  {"id":"POLICY-NCBA-04","title":"NCBA AI Logging Standard","authority":"internal_policy","status":"current","effective_date":"2024-01-01","jurisdiction":"KE","text":"AI interactions must record the request, model version, retrieved source identifiers, guardrail results, reviewer action, and timestamp in an append-only audit record."},
  {"id":"POLICY-NCBA-05","title":"NCBA AI Escalation Standard","authority":"internal_policy","status":"current","effective_date":"2024-01-01","jurisdiction":"KE","text":"The system must refuse unsupported legal conclusions and escalate imminent deadlines, litigation strategy, or uncertain authority to a qualified advocate."},
 ]
+
+CORPUS_PATH = Path(__file__).resolve().parent / "data" / "raw" / "kenya" / "legal_materials.json"
+
+def load_local_corpus(path: Optional[Path] = None) -> List[Dict[str, Any]]:
+    corpus_path = path or CORPUS_PATH
+    try:
+        materials = json.loads(corpus_path.read_text(encoding="utf-8"))
+        if not isinstance(materials, list) or len(materials) < 20:
+            raise ValueError("local corpus must contain at least 20 materials")
+        return materials
+    except (OSError, json.JSONDecodeError, ValueError):
+        return FALLBACK_CORPUS
+
+KNOWLEDGE_CORPUS = load_local_corpus()
 
 class SecurityGuardrail:
     PATTERNS = (("KRA_PIN",re.compile(r"\b[A-Z]\d{9}[A-Z]\b")),("PHONE_NUMBER",re.compile(r"(?:\+254|0)7\d{8}\b")),("BANK_ACCOUNT",re.compile(r"\b\d{10,16}\b")))
@@ -142,4 +157,24 @@ def answer_with_citations(question:str,corpus:Any,confidence_threshold:float=.20
 
 def run_tests()->None:
     agent=MiniWakiliAgent(); assert agent.execute_research("minimum core capital bank")["status"]=="SUCCESS"; assert agent.execute_research("weather on Mars")["status"]!="SUCCESS"; metrics=benchmark_metrics(agent); assert metrics["target_met"],metrics; print(f"Mini-Wakili assessor: PASS ({metrics['aggregate_score']}%)")
-if __name__=="__main__": run_tests()
+
+def list_corpus() -> None:
+    for material in KNOWLEDGE_CORPUS:
+        print(f"{material['id']} | {material['title']} | {material.get('section', 'n/a')} | {material['provenance']}")
+
+def demo(query: str) -> None:
+    result = MiniWakiliAgent().execute_research(query)
+    print(json.dumps(result, indent=2))
+
+if __name__=="__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Run Mini-Wakili locally")
+    parser.add_argument("query", nargs="?", help="research question")
+    parser.add_argument("--list-corpus", action="store_true", help="list the 20 local Kenyan materials")
+    args = parser.parse_args()
+    if args.list_corpus:
+        list_corpus()
+    elif args.query:
+        demo(args.query)
+    else:
+        run_tests()
