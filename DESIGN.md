@@ -29,6 +29,8 @@ PYTHONPATH=src python -m pytest -q
 
 The model pipeline exposes chunk-level citations with quoted evidence, claim-to-chunk support records, source authority/status metadata, contradiction signals, low-confidence refusal, PII input/output controls, contract-review risk flags, and deterministic benchmark metrics. The aggregate metric is a model-quality signal, not a substitute for human legal judgment.
 
+The current local benchmark reports 89.29% aggregate performance across supported-answer retrieval, citation support, unsupported-query refusal, and PII detection cases. The target is deliberately measured as a regression check, not presented as evidence of legal accuracy.
+
 HITL is enforced in code through `INTAKE_REVIEW`, `EVIDENCE_REVIEW`, `APPROVED_FOR_RELIANCE`, `ACTION_APPROVAL`, and `CLOSED` states. Every transition requires a reviewer identity and creates an append-only audit event. A draft is never considered approved merely because retrieval confidence is high.
 
 For production deployment, PDF parsing and OCR must run in an isolated, malware-scanned adapter; model hosting must satisfy Kenyan data-residency and transfer requirements; retries must be bounded and idempotent; matter memory must be tenant- and matter-scoped; and audit records must follow the applicable five-year retention policy. Missing OCR, unavailable sources, conflicting versions, or failed guardrails are stop-and-escalate conditions.

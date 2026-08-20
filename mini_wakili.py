@@ -41,6 +41,8 @@ KNOWLEDGE_CORPUS = load_local_corpus()
 
 class SecurityGuardrail:
     PATTERNS = (("KRA_PIN",re.compile(r"\b[A-Z]\d{9}[A-Z]\b")),("PHONE_NUMBER",re.compile(r"(?:\+254|0)7\d{8}\b")),("BANK_ACCOUNT",re.compile(r"\b\d{10,16}\b")))
+    INJECTION_PATTERNS = (re.compile(r"ignore\s+(?:all|any|the)\s+(?:previous|prior|above)", re.I), re.compile(r"reveal\s+(?:the|your)\s+(?:system|hidden)\s+prompt", re.I), re.compile(r"bypass\s+(?:the|all)\s+(?:guardrails|safety)", re.I))
+    BINDING_ADVICE_PATTERNS = (re.compile(r"give\s+me\s+(?:a\s+)?(?:binding|final)\s+legal\s+opinion", re.I), re.compile(r"guarantee\s+(?:that|whether)", re.I), re.compile(r"sign\s+off\s+(?:on|as)", re.I))
     @classmethod
     def sanitize_input(cls,text:str)->Tuple[str,List[str]]:
         if not isinstance(text,str): raise TypeError("query must be a string")
@@ -51,6 +53,13 @@ class SecurityGuardrail:
     @classmethod
     def validate_output(cls,text:str)->bool:
         return not any(pattern.search(text) for _,pattern in cls.PATTERNS)
+    @classmethod
+    def classify_request(cls, text: str) -> Optional[str]:
+        if any(pattern.search(text) for pattern in cls.INJECTION_PATTERNS):
+            return "PROMPT_INJECTION"
+        if any(pattern.search(text) for pattern in cls.BINDING_ADVICE_PATTERNS):
+            return "BINDING_LEGAL_OPINION"
+        return None
 
 @dataclass(frozen=True)
 class Evidence:
@@ -107,6 +116,10 @@ class MiniWakiliAgent:
         return [{"type":"conflicting_authorities","sources":", ".join(e.source_id for e in es)} for es in groups.values() if len(es)>1 and len({e.authority for e in es})>1]
     def execute_research(self,query:str)->Dict[str,Any]:
         request_id=str(uuid.uuid4()); clean,pii=SecurityGuardrail.sanitize_input(query); self.audit.append("request_received",request_id=request_id,query=clean,flagged_pii=pii,model_version="mini-wakili-deterministic-2")
+        blocked_intent = SecurityGuardrail.classify_request(clean)
+        if blocked_intent:
+            self.audit.append("request_blocked",request_id=request_id,reason=blocked_intent)
+            return {"request_id":request_id,"query":clean,"flagged_pii":pii,"status":"REFUSED_SAFETY","max_confidence":0.0,"answer":"I can provide source-grounded research, but I cannot follow prompt overrides or issue a binding legal opinion. A qualified advocate must review the matter.","citations":[],"claims":[],"contradictions":[],"hitl_required":True,"audit_events":len(self.audit.events)}
         found={}
         for sub in self.plan_subqueries(clean):
             for r in self.retriever.search(sub,5):

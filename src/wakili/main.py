@@ -1,17 +1,16 @@
-"""Command-line entry point for local Wakili research."""
+"""Command-line entry point for the grounded local research agent."""
 
 import argparse
+import json
 
-from .agent import ResearchAgent
-from .agent.tools import CorpusTool
-from .config import settings
+from mini_wakili import MiniWakiliAgent
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the Wakili research scaffold")
+    parser = argparse.ArgumentParser(description="Run Mini-Wakili legal research locally")
     parser.add_argument("question", nargs="?", default="What documents are available?")
     args = parser.parse_args()
-    print(ResearchAgent(CorpusTool(settings.corpus_path)).run(args.question))
+    print(json.dumps(MiniWakiliAgent().execute_research(args.question), indent=2))
 
 
 if __name__ == "__main__":
