@@ -31,6 +31,6 @@ The model pipeline exposes chunk-level citations with quoted evidence, claim-to-
 
 The current local benchmark reports 100.0% aggregate performance across 40 locally authored supported-answer retrieval, citation support, unsupported-query refusal, and PII detection cases. This is deliberately a regression check, not evidence of legal accuracy; an independent lawyer-labeled evaluation set is required before production use.
 
-HITL is enforced in code through `INTAKE_REVIEW`, `EVIDENCE_REVIEW`, `APPROVED_FOR_RELIANCE`, `ACTION_APPROVAL`, and `CLOSED` states. Every transition requires a reviewer identity and creates an append-only audit event. A draft is never considered approved merely because retrieval confidence is high.
+Human In The Loop (HITL) is enforced in code through `INTAKE_REVIEW`, `EVIDENCE_REVIEW`, `APPROVED_FOR_RELIANCE`, `ACTION_APPROVAL`, and `CLOSED` states. Every transition requires a reviewer identity and creates an append-only audit event. A draft is never considered approved merely because retrieval confidence is high.
 
 For production deployment, PDF parsing and OCR must run in an isolated, malware-scanned adapter; model hosting must satisfy Kenyan data-residency and transfer requirements; retries must be bounded and idempotent; matter memory must be tenant- and matter-scoped; and audit records must follow the applicable five-year retention policy. Missing OCR, unavailable sources, conflicting versions, or failed guardrails are stop-and-escalate conditions.
