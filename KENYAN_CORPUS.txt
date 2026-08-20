@@ -1,0 +1,312 @@
+MINI-WAKILI KENYAN LEGAL RESEARCH CORPUS
+========================================
+
+Purpose
+-------
+Human-readable companion export of the records loaded by mini_wakili.py from:
+data/raw/kenya/legal_materials.json
+
+This file contains 25 unique records. Statute and regulatory entries are curated
+assessment summaries and must be verified against official Kenya Law, CBK, or
+ODPC publications before reliance. POLICY-NCBA entries are synthetic internal
+policy test fixtures and are not official NCBA documents.
+
+Record 01
+---------
+ID: STATUTE-BANKING-01
+Title: Banking Act - Minimum Capital
+Authority: statute
+Status: current
+Effective date: 2020-01-01
+Jurisdiction: KE
+Section: Capital requirements
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: A banking institution must maintain the minimum core capital prescribed by applicable law and prudential requirements of the Central Bank of Kenya.
+
+Record 02
+---------
+ID: STATUTE-BANKING-02
+Title: Banking Act - Customer Confidentiality
+Authority: statute
+Status: current
+Effective date: 2020-01-01
+Jurisdiction: KE
+Section: Confidentiality
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: An institution and its officers must preserve the confidentiality of information relating to a customer except where disclosure is authorized by law or by the customer.
+
+Record 03
+---------
+ID: STATUTE-DPA-01
+Title: Data Protection Act 2019 - Processing Principles
+Authority: statute
+Status: current
+Effective date: 2019-11-25
+Jurisdiction: KE
+Section: Section 25
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Personal data must be processed lawfully, fairly and transparently, for specified, explicit and legitimate purposes.
+
+Record 04
+---------
+ID: STATUTE-DPA-02
+Title: Data Protection Act 2019 - Impact Assessment
+Authority: statute
+Status: current
+Effective date: 2019-11-25
+Jurisdiction: KE
+Section: Impact assessment
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Where processing is likely to result in high risk to data subjects, the controller must carry out a data protection impact assessment before processing.
+
+Record 05
+---------
+ID: STATUTE-DPA-03
+Title: Data Protection Act 2019 - Data Subject Rights
+Authority: statute
+Status: current
+Effective date: 2019-11-25
+Jurisdiction: KE
+Section: Rights
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: A data subject may request access to personal data, correction of inaccurate data and deletion where retention is no longer necessary, subject to lawful exemptions.
+
+Record 06
+---------
+ID: STATUTE-DPA-04
+Title: Data Protection Act 2019 - Cross-Border Transfers
+Authority: statute
+Status: current
+Effective date: 2019-11-25
+Jurisdiction: KE
+Section: Transfers
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Personal data should not be transferred outside Kenya unless the required safeguards, consent or other lawful basis for transfer is satisfied.
+
+Record 07
+---------
+ID: STATUTE-COMPANIES-01
+Title: Companies Act 2015 - Company Records
+Authority: statute
+Status: current
+Effective date: 2015-09-11
+Jurisdiction: KE
+Section: Records
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: A company must keep accounting records and corporate records sufficient to explain its transactions and financial position.
+
+Record 08
+---------
+ID: STATUTE-COMPANIES-02
+Title: Companies Act 2015 - Directors Duties
+Authority: statute
+Status: current
+Effective date: 2015-09-11
+Jurisdiction: KE
+Section: Directors
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: A director must act in good faith in the way the director considers would promote the success of the company and exercise reasonable care, skill and diligence.
+
+Record 09
+---------
+ID: STATUTE-EMPLOYMENT-01
+Title: Employment Act 2007 - Written Particulars
+Authority: statute
+Status: current
+Effective date: 2007-10-26
+Jurisdiction: KE
+Section: Contract particulars
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: An employer must provide written particulars of the employment relationship, including role, remuneration, place of work and termination terms.
+
+Record 10
+----------
+ID: STATUTE-EMPLOYMENT-02
+Title: Employment Act 2007 - Annual Leave
+Authority: statute
+Status: current
+Effective date: 2007-10-26
+Jurisdiction: KE
+Section: Leave
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: An employee is entitled to annual leave of at least the statutory minimum after completing the qualifying period of service.
+
+Record 11
+----------
+ID: STATUTE-EMPLOYMENT-03
+Title: Employment Act 2007 - Termination Process
+Authority: statute
+Status: current
+Effective date: 2007-10-26
+Jurisdiction: KE
+Section: Fair procedure
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Before termination on grounds of misconduct, poor performance or incapacity, the employer should explain the reason and give the employee an opportunity to respond.
+
+Record 12
+----------
+ID: STATUTE-ANTI-CORRUPTION-01
+Title: Anti-Corruption and Economic Crimes Act - Corrupt Conduct
+Authority: statute
+Status: current
+Effective date: 2003-05-02
+Jurisdiction: KE
+Section: Corruption offences
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Giving, receiving or soliciting an advantage to influence an improper performance of a function may constitute corrupt conduct and requires escalation.
+
+Record 13
+----------
+ID: STATUTE-AML-01
+Title: Proceeds of Crime and Anti-Money Laundering Act - Reporting
+Authority: statute
+Status: current
+Effective date: 2009-12-31
+Jurisdiction: KE
+Section: Suspicious transactions
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Reporting institutions must identify and report suspicious or unusual transactions through the prescribed channels and retain relevant records.
+
+Record 14
+----------
+ID: STATUTE-CONSUMER-01
+Title: Consumer Protection Act 2012 - Unfair Practices
+Authority: statute
+Status: current
+Effective date: 2012-12-24
+Jurisdiction: KE
+Section: Consumer protection
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: A supplier must not engage in misleading, deceptive or unconscionable conduct when offering goods or services to a consumer.
+
+Record 15
+----------
+ID: STATUTE-EVIDENCE-01
+Title: Evidence Act - Electronic Records
+Authority: statute
+Status: current
+Effective date: 1963-01-01
+Jurisdiction: KE
+Section: Electronic evidence
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Electronic records may be admissible where the applicable requirements for authenticity, integrity and reliable production are satisfied.
+
+Record 16
+----------
+ID: STATUTE-CYBERCRIMES-01
+Title: Computer Misuse and Cybercrimes Act - Unauthorized Access
+Authority: statute
+Status: current
+Effective date: 2018-05-30
+Jurisdiction: KE
+Section: Cybercrime
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Intentionally accessing a computer system without authorization or exceeding authorization may constitute an offence.
+
+Record 17
+----------
+ID: STATUTE-ARBITRATION-01
+Title: Arbitration Act - Arbitration Agreement
+Authority: statute
+Status: current
+Effective date: 1995-01-01
+Jurisdiction: KE
+Section: Agreement
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: An arbitration agreement records the parties' agreement to submit defined disputes to arbitration and should be assessed for scope and enforceability.
+
+Record 18
+----------
+ID: STATUTE-LIMITATION-01
+Title: Limitation of Actions Act - Time Limits
+Authority: statute
+Status: current
+Effective date: 1970-01-01
+Jurisdiction: KE
+Section: Limitation
+Provenance: Curated assessment summary; verify against official Kenya Law text.
+Text: Claims are subject to statutory limitation periods that depend on the nature of the claim; deadline questions require qualified legal review.
+
+Record 19
+----------
+ID: REG-CBK-01
+Title: CBK Prudential Guideline - Outsourcing Risk
+Authority: regulation
+Status: current
+Effective date: 2021-01-01
+Jurisdiction: KE
+Section: Third-party risk
+Provenance: Curated assessment summary; verify against official CBK publication.
+Text: A regulated institution remains accountable for outsourced activities and should perform due diligence, contractual oversight and ongoing monitoring of service providers.
+
+Record 20
+----------
+ID: REG-ODPC-01
+Title: ODPC Guidance - Data Protection Impact Assessments
+Authority: regulation
+Status: current
+Effective date: 2023-01-01
+Jurisdiction: KE
+Section: DPIA practice
+Provenance: Curated assessment summary; verify against official ODPC publication.
+Text: A DPIA should describe the processing, assess necessity and proportionality, identify risks to data subjects and document mitigating measures.
+
+Record 21
+----------
+ID: POLICY-NCBA-01
+Title: NCBA Outsourcing and Vendor Risk
+Authority: internal_policy
+Status: current
+Effective date: 2024-01-01
+Jurisdiction: KE
+Section: Vendor risk
+Provenance: Synthetic internal-policy test fixture; not an official NCBA document.
+Text: Third-party cloud providers handling customer data must guarantee local data residency or explicit statutory safeguards compliant with the Kenya Data Protection Act 2019.
+
+Record 22
+----------
+ID: POLICY-NCBA-02
+Title: NCBA Human-in-the-Loop AI Mandate
+Authority: internal_policy
+Status: current
+Effective date: 2024-01-01
+Jurisdiction: KE
+Section: AI review
+Provenance: Synthetic internal-policy test fixture; not an official NCBA document.
+Text: AI-generated review notes, contract assessments and legal summaries must be reviewed and approved by a qualified legal advocate prior to formal reliance or client delivery.
+
+Record 23
+----------
+ID: POLICY-NCBA-03
+Title: NCBA Approved Contract Templates
+Authority: internal_policy
+Status: current
+Effective date: 2024-01-01
+Jurisdiction: KE
+Section: Contract review
+Provenance: Synthetic internal-policy test fixture; not an official NCBA document.
+Text: Contract reviewers must compare material agreements against the current approved template and escalate material deviations to Legal before execution.
+
+Record 24
+----------
+ID: POLICY-NCBA-04
+Title: NCBA AI Logging Standard
+Authority: internal_policy
+Status: current
+Effective date: 2024-01-01
+Jurisdiction: KE
+Section: Audit logging
+Provenance: Synthetic internal-policy test fixture; not an official NCBA document.
+Text: AI interactions must record the request, model version, retrieved source identifiers, guardrail results, reviewer action and timestamp in an append-only audit record.
+
+Record 25
+----------
+ID: POLICY-NCBA-05
+Title: NCBA AI Escalation Standard
+Authority: internal_policy
+Status: current
+Effective date: 2024-01-01
+Jurisdiction: KE
+Section: Escalation
+Provenance: Synthetic internal-policy test fixture; not an official NCBA document.
+Text: The system must refuse unsupported legal conclusions and escalate imminent deadlines, litigation strategy or uncertain authority to a qualified advocate.
