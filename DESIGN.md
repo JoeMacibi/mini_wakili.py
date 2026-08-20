@@ -29,7 +29,7 @@ PYTHONPATH=src python -m pytest -q
 
 The model pipeline exposes chunk-level citations with quoted evidence, claim-to-chunk support records, source authority/status metadata, contradiction signals, low-confidence refusal, PII input/output controls, contract-review risk flags, and deterministic benchmark metrics. The aggregate metric is a model-quality signal, not a substitute for human legal judgment.
 
-The current local benchmark reports 89.29% aggregate performance across supported-answer retrieval, citation support, unsupported-query refusal, and PII detection cases. The target is deliberately measured as a regression check, not presented as evidence of legal accuracy.
+The current local benchmark reports 100.0% aggregate performance across 40 locally authored supported-answer retrieval, citation support, unsupported-query refusal, and PII detection cases. This is deliberately a regression check, not evidence of legal accuracy; an independent lawyer-labeled evaluation set is required before production use.
 
 HITL is enforced in code through `INTAKE_REVIEW`, `EVIDENCE_REVIEW`, `APPROVED_FOR_RELIANCE`, `ACTION_APPROVAL`, and `CLOSED` states. Every transition requires a reviewer identity and creates an append-only audit event. A draft is never considered approved merely because retrieval confidence is high.
 
